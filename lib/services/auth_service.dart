@@ -62,7 +62,7 @@ class AuthService {
   /// Metodo para cerrar sesion
   Future<void> logout() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? token = prefs.getString('jwt');
+    String? token = prefs.getString('token');
 
     if (token != null) {
       final url = Uri.parse('$apiUrl/logout');
