@@ -65,7 +65,7 @@ class UserService {
   Future<void> createUser(String nombreUsuario, String correoInstitucional, String telefono, String password, int identidad, int idrol) async {
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? token = prefs.getString('jwt'); //recupera token almacenado
+    String? token = prefs.getString('token'); //recupera token almacenado
 
     //verifica que no sea nulo el token
 
@@ -97,7 +97,7 @@ class UserService {
   Future<void> updateUser(int idusuario, String nombreUsuario, String correoInstitucional, String telefono) async {
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? token = prefs.getString('jwt'); //recupera token almacenado
+    String? token = prefs.getString('token'); //recupera token almacenado
 
     //verifica que no sea nulo el token
 
@@ -127,7 +127,7 @@ class UserService {
   Future<User> getUserById(int idusuario) async {
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? token = prefs.getString('jwt'); //recupera token almacenado
+    String? token = prefs.getString('token'); //recupera token almacenado
 
     //verifica que no sea nulo el token
 
@@ -155,7 +155,7 @@ class UserService {
   Future<void> deleteUser(int idusuario) async {
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? token = prefs.getString('jwt'); //recupera token almacenado
+    String? token = prefs.getString('token'); //recupera token almacenado
 
     //verifica que no sea nulo el token
 
