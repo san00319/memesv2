@@ -101,6 +101,15 @@ class NavigationDrawerMenuState extends State<NavigationDrawerMenu> {
           Navigator.of(context).pop();
         },
       ),
+
+      ListTile(
+        leading: const Icon(Icons.category, color: Colors.black),
+        title: const Text('Categorías', style: TextStyle(color: Colors.black)),
+        onTap: () {
+          context.go('/categorias'); // Ruta a la lista de categorías
+          Navigator.of(context).pop();
+        },
+      ),
       // Puedes agregar más opciones aquí
       ListTile(
         leading: const Icon(Icons.logout, color: Colors.red),

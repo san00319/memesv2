@@ -6,7 +6,6 @@ import 'package:memesv2/views/categories/category_list_view.dart';
 import 'package:memesv2/views/memes/meme_create.dart';
 import 'package:memesv2/views/memes/meme_edit.dart';
 import 'package:memesv2/views/memes/meme_list.dart';
-import 'package:memesv2/views/puntoRecoleccion/puntoRecoleccion_delete_view.dart';
 import 'package:memesv2/views/roles/roles_create_view.dart';
 import 'package:memesv2/views/roles/roles_delete_view.dart';
 import 'package:memesv2/views/roles/roles_edit_view.dart';
@@ -26,6 +25,11 @@ import 'package:memesv2/views/ubicacion/ubicacion_list_view.dart';
 import 'package:memesv2/views/puntoRecoleccion/puntoRecoleccion_list_view.dart';
 import 'package:memesv2/views/puntoRecoleccion/puntoRecoleccion_create_view.dart';
 import 'package:memesv2/views/puntoRecoleccion/puntoRecoleccion_edit_view.dart';
+import 'package:memesv2/views/puntoRecoleccion/puntoRecoleccion_delete_view.dart';
+import 'package:memesv2/views/categoria/categoria_edit_view.dart';
+import 'package:memesv2/views/categoria/categoria_delete_view.dart';
+import 'package:memesv2/views/categoria/categoria_create_view.dart';
+import 'package:memesv2/views/categoria/categoria_list_view.dart';
 
 
 class AppRouter {
@@ -192,6 +196,30 @@ class AppRouter {
           builder: (context, state) {
             final idpunto = state.params['id']!;
             return PuntoRecoleccionDelete(idpunto: idpunto);
+          },
+        ),
+
+        // Rutas para categorías
+        GoRoute(
+          path: '/categorias',  // Lista de categorías
+          builder: (context, state) => const CategoriaList(),
+        ),
+        GoRoute(
+          path: '/categorias/create',  // Crear nueva categoría
+          builder: (context, state) => const CategoriaCreate(),
+        ),
+        GoRoute(
+          path: '/categorias/edit/:id',  // Editar categoría
+          builder: (context, state) {
+            final idcategoria = state.params['id']!;
+            return CategoriaEdit(idcategoria: idcategoria);
+          },
+        ),
+        GoRoute(
+          path: '/categorias/delete/:id',
+          builder: (context, state) {
+            final idcategoria = state.params['id']!;
+            return CategoriaDelete(idcategoria: idcategoria);
           },
         ),
       ],
