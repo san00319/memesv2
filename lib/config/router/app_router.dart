@@ -1,10 +1,12 @@
 import 'package:go_router/go_router.dart';
+import 'package:memesv2/views/login/login_view.dart'; // Importa la vista del login
 import 'package:memesv2/views/categories/category_create_view.dart';
 import 'package:memesv2/views/categories/category_edit_view.dart';
 import 'package:memesv2/views/categories/category_list_view.dart';
 import 'package:memesv2/views/memes/meme_create.dart';
 import 'package:memesv2/views/memes/meme_edit.dart';
 import 'package:memesv2/views/memes/meme_list.dart';
+import 'package:memesv2/views/puntoRecoleccion/puntoRecoleccion_delete_view.dart';
 import 'package:memesv2/views/roles/roles_create_view.dart';
 import 'package:memesv2/views/roles/roles_delete_view.dart';
 import 'package:memesv2/views/roles/roles_edit_view.dart';
@@ -17,7 +19,14 @@ import 'package:memesv2/views/user/user_create_view.dart';
 import 'package:memesv2/views/user/user_delete_view.dart';
 import 'package:memesv2/views/user/user_edit_view.dart';
 import 'package:memesv2/views/user/user_list_view.dart';
-import 'package:memesv2/views/login/login_view.dart'; // Importa la vista del login
+import 'package:memesv2/views/ubicacion/ubicacion_create_view.dart';
+import 'package:memesv2/views/ubicacion/ubicacion_delete_view.dart';
+import 'package:memesv2/views/ubicacion/ubicacion_edit_view.dart';
+import 'package:memesv2/views/ubicacion/ubicacion_list_view.dart';
+import 'package:memesv2/views/puntoRecoleccion/puntoRecoleccion_list_view.dart';
+import 'package:memesv2/views/puntoRecoleccion/puntoRecoleccion_create_view.dart';
+import 'package:memesv2/views/puntoRecoleccion/puntoRecoleccion_edit_view.dart';
+
 
 class AppRouter {
   static GoRouter router(bool isLoggedIn) {
@@ -135,6 +144,54 @@ class AppRouter {
           builder: (context, state) {
             final idusuario = state.params['id']!;
             return UserDelete(idusuario: idusuario);
+          },
+        ),
+
+        // Rutas para Ubicaciones
+        GoRoute(
+          path: '/ubicaciones',
+          builder: (context, state) => const UbicacionList(),
+        ),
+        GoRoute(
+          path: '/ubicaciones/create',
+          builder: (context, state) => const UbicacionCreate(),
+        ),
+        GoRoute(
+          path: '/ubicaciones/edit/:id',
+          builder: (context, state) {
+            final idubicacion = state.params['id']!;
+            return UbicacionEdit(idubicacion: idubicacion);
+          },
+        ),
+        GoRoute(
+          path: '/ubicaciones/delete/:id',
+          builder: (context, state) {
+            final idubicacion = state.params['id']!;
+            return UbicacionDelete(idubicacion: idubicacion);
+          },
+        ),
+
+        // Rutas para Puntos de Recolección
+        GoRoute(
+          path: '/puntosrecoleccion',
+          builder: (context, state) => const PuntoRecoleccionList(),
+        ),
+        GoRoute(
+          path: '/puntosrecoleccion/create',
+          builder: (context, state) => const PuntoRecoleccionCreate(),
+        ),
+        GoRoute(
+          path: '/puntosrecoleccion/edit/:id',
+          builder: (context, state) {
+            final idpunto = state.params['id']!;
+            return PuntoRecoleccionEdit(idpunto: idpunto);
+          },
+        ),
+        GoRoute(
+          path: '/puntosrecoleccion/delete/:id',
+          builder: (context, state) {
+            final idpunto = state.params['id']!;
+            return PuntoRecoleccionDelete(idpunto: idpunto);
           },
         ),
       ],

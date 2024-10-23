@@ -1,53 +1,55 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:memesv2/models/user.dart'; 
-import 'package:memesv2/services/user_service.dart';
+import 'package:memesv2/models/puntoRecoleccion.dart'; 
+import 'package:memesv2/services/puntoRecoleccion_service.dart';
 import 'package:memesv2/widgets/navigation_drawer_menu.dart';
 
-class UserList extends StatefulWidget {
-  const UserList({super.key});
+/// Vista para listar todos los puntos de recolección.
+class PuntoRecoleccionList extends StatefulWidget {
+  const PuntoRecoleccionList({super.key});
 
   @override
-  State<UserList> createState() => _UserListState();
+  State<PuntoRecoleccionList> createState() => _PuntoRecoleccionListState();
 }
 
-class _UserListState extends State<UserList> {
-  final UserService _userService = UserService();
-  late Future<List<User>> _futureUsers;
+class _PuntoRecoleccionListState extends State<PuntoRecoleccionList> {
+  final PuntoRecoleccionService _puntoRecoleccionService = PuntoRecoleccionService();
+  late Future<List<PuntoRecoleccion>> _futurePuntos;
 
   @override
   void initState() {
     super.initState();
-    _futureUsers = _userService.getUsers(); // Cambiamos al método de obtener usuarios
+    // Llamamos al servicio para obtener la lista de puntos de recolección
+    _futurePuntos = _puntoRecoleccionService.getPuntosRecoleccion();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Lista de Usuarios'),
+        title: const Text('Lista de Puntos de Recolección'),
       ),
       drawer: const NavigationDrawerMenu(),
-      body: FutureBuilder<List<User>>(
-        future: _futureUsers,
+      body: FutureBuilder<List<PuntoRecoleccion>>(
+        future: _futurePuntos,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            final users = snapshot.data!;
+            final puntos = snapshot.data!;
             return ListView.builder(
-              itemCount: users.length,
+              itemCount: puntos.length,
               itemBuilder: (context, index) {
-                final user = users[index];
+                final punto = puntos[index];
                 return ListTile(
-                  title: Text(user.nombreUsuario), // Nombre del usuario
-                  subtitle: Text(user.correoInstitucional), // Correo del usuario como subtítulo
+                  title: Text(punto.nombrePunto), // Nombre del punto de recolección
+                  subtitle: Text('ID Entidad: ${punto.entidad.identidad} , ID Ubicación: ${punto.ubicacion.idubicacion}'), // Foráneas entidad y ubicación
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       IconButton(
                         icon: const Icon(Icons.edit),
                         onPressed: () {
-                          print('Edit button pressed for user ID: ${user.idusuario}');
-                          context.go('/usuarios/edit/${user.idusuario}'); // Redirigimos a la vista de edición de usuarios
+                          print('Edit button pressed for Punto ID: ${punto.idpunto}');
+                          context.go('/puntosRecoleccion/edit/${punto.idpunto}'); // Redirigimos a la vista de edición
                         },
                       ),
                       IconButton(
@@ -57,8 +59,8 @@ class _UserListState extends State<UserList> {
                             context: context,
                             builder: (BuildContext context) {
                               return AlertDialog(
-                                title: const Text('Eliminar Usuario'),
-                                content: const Text('¿Estás seguro de que deseas eliminar este usuario?'),
+                                title: const Text('Eliminar Punto de Recolección'),
+                                content: const Text('¿Estás seguro de que deseas eliminar este punto?'),
                                 actions: <Widget>[
                                   TextButton(
                                     onPressed: () {
@@ -69,17 +71,17 @@ class _UserListState extends State<UserList> {
                                   TextButton(
                                     onPressed: () async {
                                       try {
-                                        await _userService.deleteUser(user.idusuario); // Método para eliminar usuario
+                                        await _puntoRecoleccionService.deletePuntoRecoleccion(punto.idpunto); // Método para eliminar punto
                                         setState(() {
-                                          _futureUsers = _userService.getUsers(); // Refrescamos la lista
+                                          _futurePuntos = _puntoRecoleccionService.getPuntosRecoleccion(); // Refrescamos la lista
                                         });
                                         ScaffoldMessenger.of(context).showSnackBar(
-                                          const SnackBar(content: Text('Usuario eliminado con éxito')),
+                                          const SnackBar(content: Text('Punto de recolección eliminado con éxito')),
                                         );
                                         Navigator.of(context).pop();
                                       } catch (e) {
                                         ScaffoldMessenger.of(context).showSnackBar(
-                                          SnackBar(content: Text('Error al eliminar el usuario: $e')),
+                                          SnackBar(content: Text('Error al eliminar el punto: $e')),
                                         );
                                       }
                                     },
@@ -104,7 +106,7 @@ class _UserListState extends State<UserList> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          context.go('/usuarios/create'); // Ruta para crear un nuevo usuario
+          context.go('/puntosRecoleccion/create'); // Ruta para crear un nuevo punto de recolección
         },
         child: const Icon(Icons.add),
       ),

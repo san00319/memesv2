@@ -84,6 +84,23 @@ class NavigationDrawerMenuState extends State<NavigationDrawerMenu> {
           Navigator.of(context).pop();
         },
       ),
+      ListTile(
+        leading: const Icon(Icons.location_on, color: Colors.black),
+        title: const Text('Ubicaciones', style: TextStyle(color: Colors.black)),
+        onTap: () {
+          context.go('/ubicaciones');
+          Navigator.of(context).pop();
+        },
+      ),
+
+      ListTile(
+        leading: const Icon(Icons.store, color: Colors.black),
+        title: const Text('Puntos de Recolección', style: TextStyle(color: Colors.black)),
+        onTap: () {
+          context.go('/puntosrecoleccion');  // Navega a la ruta de PuntoRecoleccion
+          Navigator.of(context).pop();
+        },
+      ),
       // Puedes agregar más opciones aquí
       ListTile(
         leading: const Icon(Icons.logout, color: Colors.red),

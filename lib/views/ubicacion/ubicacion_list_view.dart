@@ -1,53 +1,52 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:memesv2/models/user.dart'; 
-import 'package:memesv2/services/user_service.dart';
+import 'package:memesv2/models/ubicacion.dart';
+import 'package:memesv2/services/ubicacion_service.dart';
 import 'package:memesv2/widgets/navigation_drawer_menu.dart';
 
-class UserList extends StatefulWidget {
-  const UserList({super.key});
+class UbicacionList extends StatefulWidget {
+  const UbicacionList({super.key});
 
   @override
-  State<UserList> createState() => _UserListState();
+  State<UbicacionList> createState() => _UbicacionListState();
 }
 
-class _UserListState extends State<UserList> {
-  final UserService _userService = UserService();
-  late Future<List<User>> _futureUsers;
+class _UbicacionListState extends State<UbicacionList> {
+  final UbicacionService _ubicacionService = UbicacionService();
+  late Future<List<Ubicacion>> _futureUbicaciones;
 
   @override
   void initState() {
     super.initState();
-    _futureUsers = _userService.getUsers(); // Cambiamos al método de obtener usuarios
+    _futureUbicaciones = _ubicacionService.getUbicaciones();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Lista de Usuarios'),
+        title: const Text('Lista de Ubicaciones'),
       ),
       drawer: const NavigationDrawerMenu(),
-      body: FutureBuilder<List<User>>(
-        future: _futureUsers,
+      body: FutureBuilder<List<Ubicacion>>(
+        future: _futureUbicaciones,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            final users = snapshot.data!;
+            final ubicaciones = snapshot.data!;
             return ListView.builder(
-              itemCount: users.length,
+              itemCount: ubicaciones.length,
               itemBuilder: (context, index) {
-                final user = users[index];
+                final ubicacion = ubicaciones[index];
                 return ListTile(
-                  title: Text(user.nombreUsuario), // Nombre del usuario
-                  subtitle: Text(user.correoInstitucional), // Correo del usuario como subtítulo
+                  title: Text('${ubicacion.nombreUbicacion} - Bloque: ${ubicacion.bloque}'),
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       IconButton(
                         icon: const Icon(Icons.edit),
                         onPressed: () {
-                          print('Edit button pressed for user ID: ${user.idusuario}');
-                          context.go('/usuarios/edit/${user.idusuario}'); // Redirigimos a la vista de edición de usuarios
+                          print('Edit button pressed for ubicacion ID: ${ubicacion.idubicacion}');
+                          context.go('/ubicaciones/edit/${ubicacion.idubicacion}');
                         },
                       ),
                       IconButton(
@@ -57,8 +56,8 @@ class _UserListState extends State<UserList> {
                             context: context,
                             builder: (BuildContext context) {
                               return AlertDialog(
-                                title: const Text('Eliminar Usuario'),
-                                content: const Text('¿Estás seguro de que deseas eliminar este usuario?'),
+                                title: const Text('Eliminar Ubicación'),
+                                content: const Text('¿Estás seguro de que deseas eliminar esta ubicación?'),
                                 actions: <Widget>[
                                   TextButton(
                                     onPressed: () {
@@ -69,17 +68,17 @@ class _UserListState extends State<UserList> {
                                   TextButton(
                                     onPressed: () async {
                                       try {
-                                        await _userService.deleteUser(user.idusuario); // Método para eliminar usuario
+                                        await _ubicacionService.deleteUbicacion(ubicacion.idubicacion);
                                         setState(() {
-                                          _futureUsers = _userService.getUsers(); // Refrescamos la lista
+                                          _futureUbicaciones = _ubicacionService.getUbicaciones();
                                         });
                                         ScaffoldMessenger.of(context).showSnackBar(
-                                          const SnackBar(content: Text('Usuario eliminado con éxito')),
+                                          const SnackBar(content: Text('Ubicación eliminada con éxito')),
                                         );
                                         Navigator.of(context).pop();
                                       } catch (e) {
                                         ScaffoldMessenger.of(context).showSnackBar(
-                                          SnackBar(content: Text('Error al eliminar el usuario: $e')),
+                                          SnackBar(content: Text('Error al eliminar la ubicación: $e')),
                                         );
                                       }
                                     },
@@ -104,7 +103,7 @@ class _UserListState extends State<UserList> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          context.go('/usuarios/create'); // Ruta para crear un nuevo usuario
+          context.go('/ubicaciones/create');
         },
         child: const Icon(Icons.add),
       ),
